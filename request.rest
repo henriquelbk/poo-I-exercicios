@@ -1,0 +1,16 @@
+GET http://localhost:3003/ping
+###
+
+GET http://localhost:3003/videos
+###
+
+POST http://localhost:3003/videos
+Content-Type: application/json
+
+{
+    "id": "v004",
+    "titulo": "fla x river 2019",
+    "duracao_em_segundos": 632,
+    "data_de_upload": "2019"
+}
+###
