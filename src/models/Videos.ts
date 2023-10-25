@@ -4,7 +4,8 @@ export class Video {
         private id: string,
         private titulo: string,
         private duracaoEmSegundos: number,
-        private dataDeUpload: string) 
+        private dataDeUpload: string
+        ) 
         {}
         
     public getId(): string {

@@ -121,28 +121,63 @@ app.post("/videos", async (req: Request, res: Response) => {
     }
 })
 
-app.put("/accounts/:id", async (req: Request, res: Response) => {
+app.put("/videos/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
-        const value = req.body.value
 
-        if (typeof value !== "number") {
-            res.status(400)
-            throw new Error("'value' deve ser number")
+        const newId = req.body.id as string
+        const newTitle = req.body.title as string
+        const newDuration = req.body.duracao_em_segundos as number
+        const newData = req.body.data_de_upload as string
+
+        const [ videoDB ]: TVideoDB[] = await db("videos").where({ id })
+
+        const video = new Video (
+            videoDB.id,
+            videoDB.titulo,
+            videoDB.duracao_em_segundos,
+            videoDB.data_de_upload
+        )
+
+        if(newId !== undefined){
+            if(typeof newId !== "string") {
+                res.status(400)
+                throw new Error("'id' deve ser string")
+            }
+        }
+        if(newTitle !== undefined){
+            if(typeof newTitle !== "string") {
+                res.status(400)
+                throw new Error("'Titulo' deve ser string")
+            }
+        }
+        if(newDuration !== undefined){
+            if(typeof newDuration !== "number") {
+                res.status(400)
+                throw new Error("'Duração' deve ser number")
+            }
+        }
+        if(newData !== undefined){
+            if(typeof newData !== "string") {
+                res.status(400)
+                throw new Error("'id' deve ser string")
+            }
         }
 
-        const [ accountDB ]: TAccountDB[] | undefined[] = await db("accounts").where({ id })
+        newId && video.setId(newId)
+        newTitle && video.setTitulo(newTitle)
+        newDuration && video.setDuracaoEmSegundos(newDuration)
+        newData && video.setDataDeUpload(newData)
 
-        if (!accountDB) {
-            res.status(404)
-            throw new Error("'id' não encontrado")
+        const newVideo: TVideoDB = {
+            id: video.getId(),
+            titulo: video.getTitulo(),
+            duracao_em_segundos: video.getDuracaoEmSegundos(),
+            data_de_upload: video.getDataDeUpload(),
         }
-
-        accountDB.balance += value
-
-        await db("accounts").update({ balance: accountDB.balance }).where({ id })
-        
-        res.status(200).send(accountDB)
+       
+        await db('videos').update(newVideo).where({ id })
+        res.status(200).send("Video editado com sucesso")
     } catch (error) {
         console.log(error)
 
@@ -158,28 +193,22 @@ app.put("/accounts/:id", async (req: Request, res: Response) => {
     }
 })
 
-app.delete("/accounts/:id", async (req: Request, res: Response) => {
+app.delete("/videos/:id", async (req: Request, res: Response) => {
     try {
         const id = req.params.id
-        const value = req.body.value
-
-        if (typeof value !== "number") {
-            res.status(400)
-            throw new Error("'value' deve ser number")
-        }
-
-        const [ accountDB ]: TAccountDB[] | undefined[] = await db("accounts").where({ id })
-
-        if (!accountDB) {
-            res.status(404)
-            throw new Error("'id' não encontrado")
-        }
-
-        accountDB.balance += value
-
-        await db("accounts").update({ balance: accountDB.balance }).where({ id })
         
-        res.status(200).send(accountDB)
+        const [ videoDB ]: TVideoDB[] = await db("videos").where({ id })
+
+        const video = new Video (
+            videoDB.id,
+            videoDB.titulo,
+            videoDB.duracao_em_segundos,
+            videoDB.data_de_upload
+        )
+
+        await db("videos").delete().where({ id: video.getId() })
+        
+        res.status(200).send("Video deletado com sucesso!")
     } catch (error) {
         console.log(error)
 
@@ -194,3 +223,5 @@ app.delete("/accounts/:id", async (req: Request, res: Response) => {
         }
     }
 })
+
+// POO-2 Exercícios

@@ -14,3 +14,16 @@ Content-Type: application/json
     "data_de_upload": "2019"
 }
 ###
+
+PUT http://localhost:3003/videos/v002
+Content-Type: application/json
+
+{
+    "titulo": "os coringa do flamengo",
+    "duracao_em_segundos": 6452,
+    "data_de_upload": "2018"
+}
+###
+
+DELETE http://localhost:3003/videos/v001
+###

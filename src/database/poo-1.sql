@@ -3,7 +3,7 @@ CREATE TABLE videos (
     id TEXT PRIMARY KEY UNIQUE NOT NULL,
     titulo TEXT NOT NULL,
     duracao_em_segundos REAL NOT NULL,
-    data_de_upload TEXT NOT NULL
+    data_de_upload TEXT DEFAULT (DATETIME()) NOT NULL
 );
 
 INSERT INTO videos (id, titulo, duracao_em_segundos, data_de_upload)
