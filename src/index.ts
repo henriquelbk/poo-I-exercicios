@@ -1,6 +1,5 @@
 import express, { Request, Response } from 'express'
 import cors from 'cors'
-import { db } from './database/knex'
 import { Video } from './models/Videos'
 import { TVideoDB } from './types'
 

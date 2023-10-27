@@ -1,6 +1,9 @@
 import { knex } from "knex"
 
-export const db = knex({
+// Exercicío 1 de POO-2
+
+export abstract class BaseDatabase {
+    protected static connectio = knex({
     client: "sqlite3",
     connection: {
         filename: "./src/database/poo-1.db",
@@ -14,3 +17,4 @@ export const db = knex({
         }
     }
 })
+}
